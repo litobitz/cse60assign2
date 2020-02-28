@@ -29,7 +29,9 @@ public class SimpleList {
 	 * Adds a new element to the beginning of the array
 	 * If the array is full, the last element "falls off"
 	 * Otherwise each element is shifted before adding the new integer.
-	 * @param newInt is the new element that the user is trying to add to the arrayy
+	 * 
+	 * Version 2: If the array is full then we increase the size by 50% and add to the beginning
+	 * @param newInt is the new element that the user is trying to add to the array
 	 */
 	public void add(int newInt) {
 		// Check if the list is empty, if so just add at index 0
@@ -37,6 +39,7 @@ public class SimpleList {
 			list[0] = newInt;
 			count++; 		// Update count
 		}
+		
 		// Check if the list is full, if not shift to the right
 		// And the element to index 0
 		else if(count < 10) {
@@ -47,15 +50,30 @@ public class SimpleList {
 			list[0] = newInt;
 			count++;
 		}
+		
+		// The list is full, we need to increase the size
 		else {
-			// Move the elements to the right 
-			for (int index = count-2; index >= 0; index--) {
-				list[index + 1] = list[index];
+			int size = count / 2;
+			
+			// A copy of the array
+			int copyArray[] = new int[count + size];
+			
+			//Copying the old array into the new array
+			for (int index = 0; index < (count + size); index++) {
+				copyArray[index] = list[index];
 			}
+			
+			list = copyArray; // Changing the reference from the copy to the new one
+			
+			// Changing count
+			count = (size + count);
+			
+			// Now that we resized the array, we can add the element to index 0
 			list[0] = newInt;
+			count++;
 		}
 	}
-	
+ 
 	/**
 	 * Removes an element from the list by using the search method
 	 * If the element is found, then we shift everything down starting at
@@ -73,6 +91,21 @@ public class SimpleList {
 				list[index] = list[index + 1];
 			}
 			count --; 	// Update count
+		}
+		
+		// 25% capacity of the length of list
+		int emptypercent = (list.length) / 4;
+		if (count > emptypercent) {
+			
+			// A copy of the array
+			int copyArray[] = new int[count];
+			
+			//Copying the old array into the new array
+			for (int index = 0; index < (count); index++) {
+				copyArray[index] = list[index];
+			}
+			
+			list = copyArray; // Changing the reference from the copy to the new one
 		}
 	}
 	
